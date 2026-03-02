@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Adaptada</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">📅</div>
+            <span class="logo-text">Minha Agenda</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active">🏠 Hoje</a>
+            <a href="#" class="nav-item">📋 Linha do Tempo</a>
+            <a href="#" class="nav-item">🗺️ Mapas Mentais</a>
+            <a href="#" class="nav-item">💡 Dicas Zen</a>
+            <a href="#" class="nav-item">👤 Perfil</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="calendar-container">
+            <header>
+                <h2 id="month-year"></h2>
+                <div class="nav-buttons">
+                    <button id="prev">◀</button>
+                    <button id="next">▶</button>
+                </div>
+            </header>
+
+            <div class="calendar-grid">
+                <div class="day-name">Dom</div>
+                <div class="day-name">Seg</div>
+                <div class="day-name">Ter</div>
+                <div class="day-name">Qua</div>
+                <div class="day-name">Qui</div>
+                <div class="day-name">Sex</div>
+                <div class="day-name">Sáb</div>
+
+                <div id="calendar-days" class="days-container"></div>
+            </div>
+        </div>
+
+        <!-- Progress Panel -->
+        <div class="progress-panel">
+            <div class="progress-header">
+                <span>⭐ SEU PROGRESSO DO DIA</span>
+                <p>Continue assim, você está indo bem!</p>
+            </div>
+            <div class="xp-badge">🏅 215 XP</div>
+            <div class="progress-level">
+                <span>Nív. 8</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
+                <span>65%</span>
+            </div>
+            <div class="missions">
+                <span class="mission-label">🎯 Missões Diárias</span>
+                <span class="mission-count">4/6</span>
+                <div class="progress-bar"><div class="progress-fill missions-fill" style="width:66%"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
