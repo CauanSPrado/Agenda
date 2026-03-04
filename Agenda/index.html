@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Adaptada</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -16,16 +16,16 @@
             <span class="logo-text">Minha Agenda</span>
         </div>
         <nav class="sidebar-nav">
-            <a href="#" class="nav-item active">🏠 Hoje</a>
-            <a href="#" class="nav-item">📋 Linha do Tempo</a>
+            <a href="#" class="nav-item active" data-view="today">🏠 Hoje</a>
+            <a href="#" class="nav-item" data-view="timeline">📋 Linha do Tempo</a>
             <a href="#" class="nav-item">🗺️ Mapas Mentais</a>
             <a href="#" class="nav-item">💡 Dicas Zen</a>
             <a href="#" class="nav-item">👤 Perfil</a>
         </nav>
     </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
+    <!-- VIEW: HOJE (CALENDÁRIO)  -->
+    <main class="main-content" id="view-today">
         <div class="calendar-container">
             <header>
                 <h2 id="month-year"></h2>
@@ -34,7 +34,6 @@
                     <button id="next">▶</button>
                 </div>
             </header>
-
             <div class="calendar-grid">
                 <div class="day-name">Dom</div>
                 <div class="day-name">Seg</div>
@@ -43,7 +42,6 @@
                 <div class="day-name">Qui</div>
                 <div class="day-name">Sex</div>
                 <div class="day-name">Sáb</div>
-
                 <div id="calendar-days" class="days-container"></div>
             </div>
         </div>
@@ -52,21 +50,115 @@
         <div class="progress-panel">
             <div class="progress-header">
                 <span>⭐ SEU PROGRESSO DO DIA</span>
-                <p>Continue assim, você está indo bem!</p>
+                <p id="progress-message">Continue assim, você está indo bem!</p>
             </div>
-            <div class="xp-badge">🏅 215 XP</div>
+            <div class="xp-badge">🏅 <span id="xp-value">215</span> XP</div>
             <div class="progress-level">
-                <span>Nív. 8</span>
-                <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
-                <span>65%</span>
+                <span>Nív. <span id="level-value">8</span></span>
+                <div class="progress-bar"><div class="progress-fill" id="xp-bar" style="width:65%"></div></div>
+                <span id="xp-percent">65%</span>
             </div>
             <div class="missions">
                 <span class="mission-label">🎯 Missões Diárias</span>
-                <span class="mission-count">4/6</span>
-                <div class="progress-bar"><div class="progress-fill missions-fill" style="width:66%"></div></div>
+                <span class="mission-count" id="mission-count">4/6</span>
+                <div class="progress-bar"><div class="progress-fill missions-fill" id="mission-bar" style="width:66%"></div></div>
+            </div>
+            <div class="reminders-today">
+                <span class="reminders-title">📌 Lembretes de Hoje</span>
+                <ul id="today-reminders-list">
+                    <li class="no-reminders">Nenhum lembrete ainda</li>
+                </ul>
             </div>
         </div>
     </main>
+
+    <!--  VIEW: LINHA DO TEMPO  -->
+    <main class="main-content timeline-layout" id="view-timeline" style="display:none;">
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <div>
+                    <h2 class="timeline-title">📋 Linha do Tempo</h2>
+                    <p class="timeline-subtitle">Acompanhe todas as suas tarefas</p>
+                </div>
+                <div class="timeline-filters">
+                    <button class="filter-btn active" data-filter="all">Todas</button>
+                    <button class="filter-btn" data-filter="done">✅ Concluídas</button>
+                    <button class="filter-btn" data-filter="pending">⏳ Pendentes</button>
+                    <button class="filter-btn" data-filter="missed">❌ Não Feitas</button>
+                </div>
+            </div>
+
+            <div class="timeline-legend">
+                <span class="legend-item legend-done">✅ Concluída</span>
+                <span class="legend-item legend-pending">⏳ Pendente</span>
+                <span class="legend-item legend-missed">❌ Não feita</span>
+            </div>
+
+            <div class="timeline-body" id="timeline-body">
+                <p class="timeline-empty">Nenhuma tarefa encontrada. Adicione lembretes no calendário!</p>
+            </div>
+        </div>
+
+        <!-- Painel de resumo -->
+        <div class="progress-panel">
+            <div class="progress-header">
+                <span>📊 RESUMO GERAL</span>
+                <p id="tl-summary-msg">Veja seu desempenho!</p>
+            </div>
+            <div class="xp-badge">🏅 <span id="tl-xp-value">215</span> XP</div>
+            <div class="progress-level">
+                <span>Nív. <span id="tl-level-value">8</span></span>
+                <div class="progress-bar"><div class="progress-fill" id="tl-xp-bar" style="width:65%"></div></div>
+                <span id="tl-xp-percent">65%</span>
+            </div>
+
+            <div class="tl-stats">
+                <div class="tl-stat tl-stat-done">
+                    <span class="tl-stat-icon">✅</span>
+                    <span class="tl-stat-num" id="stat-done">0</span>
+                    <span class="tl-stat-label">Concluídas</span>
+                </div>
+                <div class="tl-stat tl-stat-pending">
+                    <span class="tl-stat-icon">⏳</span>
+                    <span class="tl-stat-num" id="stat-pending">0</span>
+                    <span class="tl-stat-label">Pendentes</span>
+                </div>
+                <div class="tl-stat tl-stat-missed">
+                    <span class="tl-stat-icon">❌</span>
+                    <span class="tl-stat-num" id="stat-missed">0</span>
+                    <span class="tl-stat-label">Não feitas</span>
+                </div>
+            </div>
+
+            <div class="missions">
+                <span class="mission-label">🎯 Taxa de Conclusão</span>
+                <span class="mission-count" id="tl-rate">0%</span>
+                <div class="progress-bar">
+                    <div class="progress-fill missions-fill" id="tl-rate-bar" style="width:0%"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Lembrete -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-date-title" id="modal-date-title">📅 Dia 1</span>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+            <div class="modal-reminders" id="modal-reminders">
+                <p class="no-reminders-modal">Nenhum lembrete para este dia.</p>
+            </div>
+            <div class="modal-add">
+                <input type="text" id="reminder-input" class="reminder-input" placeholder="✏️ Adicionar lembrete..." maxlength="80" />
+                <button class="btn-add" id="btn-add-reminder">＋ Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
     <script src="script.js"></script>
 </body>
