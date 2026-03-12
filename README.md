@@ -1,4 +1,4 @@
-Agenda Adaptada
+Agenda Adaptada:
 Uma agenda web interativa e responsiva com elementos de gamificação, projetada para oferecer uma experiência de organização pessoal leve, intuitiva e motivadora.
 
 Sobre o Projeto
