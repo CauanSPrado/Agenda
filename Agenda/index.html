@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
     <!-- Sidebar -->
@@ -55,13 +57,17 @@
             <div class="xp-badge">🏅 <span id="xp-value">215</span> XP</div>
             <div class="progress-level">
                 <span>Nív. <span id="level-value">8</span></span>
-                <div class="progress-bar"><div class="progress-fill" id="xp-bar" style="width:65%"></div></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="xp-bar" style="width:65%"></div>
+                </div>
                 <span id="xp-percent">65%</span>
             </div>
             <div class="missions">
                 <span class="mission-label">🎯 Missões Diárias</span>
                 <span class="mission-count" id="mission-count">4/6</span>
-                <div class="progress-bar"><div class="progress-fill missions-fill" id="mission-bar" style="width:66%"></div></div>
+                <div class="progress-bar">
+                    <div class="progress-fill missions-fill" id="mission-bar" style="width:66%"></div>
+                </div>
             </div>
             <div class="reminders-today">
                 <span class="reminders-title">📌 Lembretes de Hoje</span>
@@ -97,6 +103,37 @@
             <div class="timeline-body" id="timeline-body">
                 <p class="timeline-empty">Nenhuma tarefa encontrada. Adicione lembretes no calendário!</p>
             </div>
+
+            <section class="report-section" id="productivity-report">
+                <div class="report-header">
+                    <h3>📈 Relatório de Produtividade</h3>
+                    <p>Resumo das tarefas concluídas por dia e por semana</p>
+                </div>
+
+                <div class="report-highlights">
+                    <div class="report-card report-best">
+                        <span class="report-card-label">Dia mais produtivo</span>
+                        <strong class="report-card-value" id="best-day-value">Sem dados</strong>
+                        <small class="report-card-extra" id="best-day-extra">Adicione tarefas para começar</small>
+                    </div>
+                    <div class="report-card report-worst">
+                        <span class="report-card-label">Dia menos produtivo</span>
+                        <strong class="report-card-value" id="worst-day-value">Sem dados</strong>
+                        <small class="report-card-extra" id="worst-day-extra">Adicione tarefas para começar</small>
+                    </div>
+                </div>
+
+                <div class="report-charts">
+                    <div class="chart-block">
+                        <h4>Produtividade por dia da semana</h4>
+                        <div class="bar-chart" id="weekday-chart"></div>
+                    </div>
+                    <div class="chart-block">
+                        <h4>Produtividade por semana</h4>
+                        <div class="bar-chart" id="week-chart"></div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- Painel de resumo -->
@@ -108,7 +145,9 @@
             <div class="xp-badge">🏅 <span id="tl-xp-value">215</span> XP</div>
             <div class="progress-level">
                 <span>Nív. <span id="tl-level-value">8</span></span>
-                <div class="progress-bar"><div class="progress-fill" id="tl-xp-bar" style="width:65%"></div></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="tl-xp-bar" style="width:65%"></div>
+                </div>
                 <span id="tl-xp-percent">65%</span>
             </div>
 
@@ -151,7 +190,8 @@
                 <p class="no-reminders-modal">Nenhum lembrete para este dia.</p>
             </div>
             <div class="modal-add">
-                <input type="text" id="reminder-input" class="reminder-input" placeholder="✏️ Adicionar lembrete..." maxlength="80" />
+                <input type="text" id="reminder-input" class="reminder-input" placeholder="✏️ Adicionar lembrete..."
+                    maxlength="80" />
                 <button class="btn-add" id="btn-add-reminder">＋ Adicionar</button>
             </div>
         </div>
@@ -162,4 +202,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
