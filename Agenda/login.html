@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Adaptada — Login</title>
+    <link rel="stylesheet" href="css/login.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+ 
+<body>
+ 
+    <div class="login-card">
+         <div class="login-logo">
+            <div class="logo-icon">📅</div>
+            <span class="logo-text">Minha Agenda</span>
+        </div> 
+        <div>
+            <h1 class="login-title">Bem-vindo(a)! 👋</h1>
+            <p class="login-subtitle">Entre na sua conta ou crie uma nova para começar.</p>
+        </div>
+            <div class="xp-badge">
+            🏅 Sistema de XP &amp; Níveis ativo
+            <span class="xp-badge-right">Nível 1 → ∞</span>
+            </div>
+ 
+        <!-- Abas -->
+        <div class="tabs" role="tablist">
+            <button class="tab-btn active" id="tab-login"
+                role="tab" aria-selected="true"
+                onclick="switchTab('login')">🔑 Entrar</button>
+            <button class="tab-btn" id="tab-cadastro"
+                role="tab" aria-selected="false"
+                onclick="switchTab('cadastro')">✨ Criar conta</button>
+        </div>
+        <div class="form-panel" id="panel-login">
+ 
+            <div class="field">
+                <label for="login-user">Login</label>
+                <div class="input-wrap">
+                    <span class="i-icon" aria-hidden="true">👤</span>
+                    <!-- usuarios.login -->
+                    <input type="text" id="login-user"
+                        placeholder="seu_login"
+                        autocomplete="username"
+                        maxlength="255" />
+                </div>
+            </div>
+ 
+            <div class="field">
+                <label for="login-pw">Senha</label>
+                <div class="input-wrap">
+                    <span class="i-icon" aria-hidden="true">🔒</span>
+                    <!-- usuarios.senha -->
+                    <input type="password" id="login-pw"
+                        placeholder="••••••••"
+                        autocomplete="current-password" />
+                    <button type="button" class="toggle-pw"
+                        aria-label="Mostrar/ocultar senha"
+                        onclick="togglePw('login-pw', this)">👁️</button>
+                </div>
+            </div>
+ 
+            <div class="options-row">
+                <label class="remember">
+                    <input type="checkbox" id="remember" />
+                    <span class="check-box" aria-hidden="true">✓</span>
+                    Lembrar-me
+                </label>
+                <a href="#" class="forgot">Esqueceu a senha?</a>
+            </div>
+ 
+            <button class="btn-primary" id="btn-login" onclick="handleLogin()">
+                🚀 Entrar na Agenda
+            </button>
+ 
+        </div>
+        <div class="form-panel hidden" id="panel-cadastro">
+             <div class="field">
+                <label for="cad-nome">Nome completo</label>
+                <div class="input-wrap">
+                    <span class="i-icon" aria-hidden="true">🙂</span>
+                    <input type="text" id="cad-nome"
+                        placeholder="Ex.: Ana Silva"
+                        autocomplete="name"
+                        maxlength="255" />
+                </div>
+            </div>
+ 
+            <div class="field-row">
+                <div class="field">
+                    <label for="cad-login">Login</label>
+                    <div class="input-wrap">
+                        <span class="i-icon" aria-hidden="true">👤</span>
+                        <input type="text" id="cad-login"
+                            placeholder="Ex.: ana123"
+                            autocomplete="username"
+                            maxlength="255" />
+                    </div>
+                </div>
+ 
+                <div class="field">
+                    <label for="cad-nasc">Data de nascimento</label>
+                    <div class="input-wrap">
+                        <span class="i-icon" aria-hidden="true">🎂</span>
+                        <input type="date" id="cad-nasc"
+                            autocomplete="bday" />
+                    </div>
+                </div>
+            </div>
+ 
+            <div class="field">
+                <label for="cad-pw">Senha</label>
+                <div class="input-wrap">
+                    <span class="i-icon" aria-hidden="true">🔒</span>
+                    <input type="password" id="cad-pw"
+                        placeholder="Mínimo 6 caracteres"
+                        autocomplete="new-password"
+                        oninput="checkPw()" />
+                    <button type="button" class="toggle-pw"
+                        aria-label="Mostrar/ocultar senha"
+                        onclick="togglePw('cad-pw', this)">👁️</button>
+                </div>
+            </div>
+ 
+            <div class="pw-hints" id="pw-hints" aria-live="polite">
+                <p id="hint-len"  >• Mínimo de 6 caracteres</p>
+                <p id="hint-num"  >• Pelo menos 1 número</p>
+                <p id="hint-char" >• Pelo menos 1 letra</p>
+            </div>
+ 
+            <div class="field">
+                <label for="cad-pw2">Confirmar senha</label>
+                <div class="input-wrap">
+                    <span class="i-icon" aria-hidden="true">🔐</span>
+                    <input type="password" id="cad-pw2"
+                        placeholder="Repita a senha"
+                        autocomplete="new-password" />
+                    <button type="button" class="toggle-pw"
+                        aria-label="Mostrar/ocultar confirmação"
+                        onclick="togglePw('cad-pw2', this)">👁️</button>
+                </div>
+            </div>
+ 
+            <div class="divider">Valores iniciais automáticos</div>
+ 
+            <div class="field-row">
+                <div class="field">
+                    <label>Nível inicial</label>
+                    <input type="text" value="Nível 1" disabled
+                        style="padding-left:14px"
+                        title="Definido automaticamente — usuarios.nivel_atual DEFAULT 1" />
+                </div>
+                <div class="field">
+                    <label>XP inicial</label>
+                    <input type="text" value="0 XP" disabled
+                        style="padding-left:14px"
+                        title="Definido automaticamente — usuarios.experiencia_atual DEFAULT 0" />
+                </div>
+            </div>
+ 
+            <button class="btn-primary" id="btn-cadastro" onclick="handleCadastro()">
+                ✨ Criar minha conta
+            </button>
+ 
+        </div>
+ 
+    </div>
+ 
+    <div class="toast" id="toast"></div>
+ 
+    <script src="js/login.js"></script>
+</body>
+</html>
