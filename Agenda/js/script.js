@@ -38,6 +38,57 @@ const weekdayChartEl = document.getElementById("weekday-chart");
 const weekChartEl = document.getElementById("week-chart");
 
 let selectedDateKey = null;
+const themeToggle = document.getElementById("theme-toggle");
+const themeToggleText = document.querySelector(".theme-toggle-text");
+const themeToggleIcon = document.querySelector(".theme-toggle-icon");
+
+function applyTheme(theme) {
+    const isDark = theme === "dark";
+    document.documentElement.classList.toggle("dark-theme", isDark);
+    if (themeToggle) {
+        themeToggle.setAttribute("aria-pressed", String(isDark));
+    }
+    if (themeToggleText) {
+        themeToggleText.textContent = isDark ? "Tema claro" : "Tema escuro";
+    }
+    if (themeToggleIcon) {
+        themeToggleIcon.textContent = isDark ? "☀️" : "🌙";
+    }
+}
+
+function getPreferredTheme() {
+    try {
+        const savedTheme = localStorage.getItem("agenda-theme");
+        if (savedTheme === "dark" || savedTheme === "light") {
+            return savedTheme;
+        }
+    } catch (error) {
+        return "light";
+    }
+
+    return window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+}
+
+function toggleTheme() {
+    const nextTheme = document.documentElement.classList.contains("dark-theme")
+        ? "light"
+        : "dark";
+    try {
+        localStorage.setItem("agenda-theme", nextTheme);
+    } catch (error) {
+        /* localStorage unavailable */
+    }
+    applyTheme(nextTheme);
+}
+
+applyTheme(getPreferredTheme());
+
+if (themeToggle) {
+    themeToggle.addEventListener("click", toggleTheme);
+}
 
 //  NAVEGAÇÃO DE VIEWS
 document.querySelectorAll(".nav-item[data-view]").forEach((link) => {

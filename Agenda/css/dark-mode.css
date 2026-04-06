@@ -1,0 +1,266 @@
+html.dark-theme {
+    color-scheme: dark;
+    --bg: #0b1220;
+    --blue-bg: #13263d;
+    --green-bg: #11281b;
+    --yellow-bg: #2b230f;
+    --red-bg: #2a1418;
+    --orange-bg: #2b1c14;
+    --text-dark: #eef3f8;
+    --text-mid: #c1cad7;
+    --text-soft: #93a0b2;
+    --shadow: 0 16px 34px rgba(0, 0, 0, 0.38);
+}
+
+html.dark-theme body {
+    background-color: var(--bg);
+    color: var(--text-dark);
+}
+
+html.dark-theme .sidebar,
+html.dark-theme .calendar-container,
+html.dark-theme .progress-panel,
+html.dark-theme .timeline-container,
+html.dark-theme .modal,
+html.dark-theme .login-card {
+    background: #111827;
+    border-color: #263244;
+    box-shadow: var(--shadow);
+}
+
+html.dark-theme .sidebar {
+    border-right-color: #263244;
+}
+
+html.dark-theme .calendar-container,
+html.dark-theme .timeline-container,
+html.dark-theme .progress-panel,
+html.dark-theme .login-card,
+html.dark-theme .modal {
+    background: linear-gradient(180deg, #111827 0%, #0f1724 100%);
+}
+
+html.dark-theme .nav-item:hover,
+html.dark-theme .nav-item.active,
+html.dark-theme .tab-btn:not(.active):hover,
+html.dark-theme .filter-btn:hover,
+html.dark-theme .day:hover {
+    background: var(--blue-bg);
+}
+
+html.dark-theme .calendar-container,
+html.dark-theme .timeline-container,
+html.dark-theme .progress-panel,
+html.dark-theme .login-card,
+html.dark-theme .modal,
+html.dark-theme .tabs,
+html.dark-theme .report-card,
+html.dark-theme .chart-block,
+html.dark-theme .tl-card,
+html.dark-theme .reminder-item,
+html.dark-theme .reminder-today-item,
+html.dark-theme .day,
+html.dark-theme .filter-btn,
+html.dark-theme .legend-item,
+html.dark-theme .nav-buttons button,
+html.dark-theme .reminder-input,
+html.dark-theme input[type="text"],
+html.dark-theme input[type="password"],
+html.dark-theme input[type="date"],
+html.dark-theme .check-box {
+    background-color: #0f1724;
+    border-color: #2b3646;
+    color: var(--text-dark);
+}
+
+html.dark-theme .nav-buttons button,
+html.dark-theme .filter-btn.active,
+html.dark-theme .day-name,
+html.dark-theme .btn-primary,
+html.dark-theme .btn-add,
+html.dark-theme .btn-done,
+html.dark-theme .btn-confirm-today,
+html.dark-theme .tl-label-done,
+html.dark-theme .tl-label-missed,
+html.dark-theme .toast-success,
+html.dark-theme .toast-info {
+    color: var(--white);
+}
+
+html.dark-theme .progress-bar,
+html.dark-theme .bar-track,
+html.dark-theme .tl-line,
+html.dark-theme .report-section {
+    border-color: #263244;
+}
+
+html.dark-theme .progress-bar,
+html.dark-theme .bar-track {
+    background: #182131;
+}
+
+html.dark-theme .tl-card-today {
+    background: #102845;
+    border-color: var(--blue-light);
+}
+
+html.dark-theme .report-best,
+html.dark-theme .tl-stat-done,
+html.dark-theme .legend-done,
+html.dark-theme .tl-task-done,
+html.dark-theme .reminder-item.done,
+html.dark-theme .reminder-today-item.done {
+    background: #102318;
+}
+
+html.dark-theme .report-worst,
+html.dark-theme .tl-stat-missed,
+html.dark-theme .legend-missed,
+html.dark-theme .tl-task-missed {
+    background: #2a171b;
+}
+
+html.dark-theme .tl-stat-pending,
+html.dark-theme .legend-pending,
+html.dark-theme .tl-task-pending {
+    background: #2a2211;
+}
+
+html.dark-theme .modal-overlay {
+    background: rgba(3, 8, 16, 0.76);
+}
+
+html.dark-theme .modal-close,
+html.dark-theme .btn-delete {
+    background: #2a171b;
+    border-color: #6b2430;
+    color: #f7d9df;
+}
+
+html.dark-theme .modal-close:hover,
+html.dark-theme .btn-delete:hover {
+    background: var(--red);
+    color: var(--white);
+    border-color: var(--red);
+}
+
+html.dark-theme .toast {
+    background: #0a0f18;
+    color: #f7fbff;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.42);
+}
+
+html.dark-theme .toast-success {
+    background: #185232;
+    border-color: #2f7a4d;
+}
+
+html.dark-theme .toast-info {
+    background: #174172;
+    border-color: #2a67a6;
+}
+
+html.dark-theme .toast-level {
+    background: #7f5f00;
+    color: #fff7dd;
+    border-color: #b58d15;
+}
+
+html.dark-theme .theme-toggle {
+    background: rgba(17, 24, 39, 0.96);
+    border-color: #334155;
+    color: var(--text-dark);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34);
+}
+
+html.dark-theme .theme-toggle:hover {
+    border-color: var(--blue-light);
+    color: var(--blue-light);
+}
+
+html.dark-theme .login-subtitle,
+html.dark-theme .timeline-subtitle,
+html.dark-theme .report-header p,
+html.dark-theme .timeline-empty,
+html.dark-theme .no-reminders,
+html.dark-theme .no-reminders-modal,
+html.dark-theme .bar-empty,
+html.dark-theme .progress-header span,
+html.dark-theme .reminders-title,
+html.dark-theme .mission-label,
+html.dark-theme .tl-stat-label,
+html.dark-theme .report-card-label,
+html.dark-theme .report-card-extra,
+html.dark-theme .bar-label,
+html.dark-theme .bar-value,
+html.dark-theme .divider,
+html.dark-theme .xp-badge-right,
+html.dark-theme .tl-task-status-label,
+html.dark-theme .done-tag,
+html.dark-theme .forgot {
+    color: var(--text-soft);
+}
+
+html.dark-theme input::placeholder,
+html.dark-theme .reminder-input::placeholder {
+    color: #748095;
+}
+
+html.dark-theme input:focus,
+html.dark-theme .reminder-input:focus {
+    background: #111a2a;
+    box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.2);
+}
+
+html.dark-theme .login-title,
+html.dark-theme .logo-text,
+html.dark-theme header h2,
+html.dark-theme .timeline-title,
+html.dark-theme .report-header h3,
+html.dark-theme .chart-block h4,
+html.dark-theme .modal-date-title,
+html.dark-theme .tl-weekday,
+html.dark-theme .tl-date,
+html.dark-theme .progress-header p,
+html.dark-theme .xp-badge,
+html.dark-theme .mission-count,
+html.dark-theme .tl-stat-num,
+html.dark-theme .reminder-today-text,
+html.dark-theme .reminder-text,
+html.dark-theme .tl-task-text,
+html.dark-theme .report-card-value,
+html.dark-theme .nav-item,
+html.dark-theme .day,
+html.dark-theme .tab-btn,
+html.dark-theme .field label,
+html.dark-theme .theme-toggle {
+    color: var(--text-dark);
+}
+
+html.dark-theme .nav-item.active,
+html.dark-theme .nav-item:hover,
+html.dark-theme .filter-btn.active,
+html.dark-theme .filter-btn:hover,
+html.dark-theme .tab-btn.active,
+html.dark-theme .tab-btn:not(.active):hover,
+html.dark-theme .day:hover {
+    color: var(--blue-light);
+}
+
+html.dark-theme .today {
+    border-color: #2d5ea8 !important;
+    box-shadow: 0 8px 20px rgba(21, 101, 192, 0.34) !important;
+}
+
+html.dark-theme .tl-dot,
+html.dark-theme .xp-badge,
+html.dark-theme .legend-item,
+html.dark-theme .tab-btn.active,
+html.dark-theme .btn-primary,
+html.dark-theme .btn-add,
+html.dark-theme .btn-done,
+html.dark-theme .btn-confirm-today,
+html.dark-theme .nav-buttons button:hover,
+html.dark-theme .filter-btn.active {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+}
