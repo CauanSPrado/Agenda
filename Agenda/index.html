@@ -42,6 +42,10 @@
     </script>
 
 
+    <!-- Canvas para Confete -->
+    <canvas id="confetti-canvas"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas>
+
     <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
         <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
         <span class="theme-toggle-text">Tema escuro</span>
@@ -169,6 +173,23 @@
                         <div class="bar-chart" id="week-chart"></div>
                     </div>
                 </div>
+
+                <!-- Heatmap de Produtividade -->
+                <section class="heatmap-section" id="heatmap-section">
+                    <div class="heatmap-header">
+                        <h3>🔥 Heatmap de Produtividade</h3>
+                        <p>Intensidade de tarefas concluídas (últimas 4 semanas)</p>
+                    </div>
+                    <div class="heatmap-legend">
+                        <span class="heatmap-legend-item"><span class="heatmap-box heatmap-box-0"></span> 0
+                            tarefas</span>
+                        <span class="heatmap-legend-item"><span class="heatmap-box heatmap-box-1"></span> 1-2</span>
+                        <span class="heatmap-legend-item"><span class="heatmap-box heatmap-box-2"></span> 3-4</span>
+                        <span class="heatmap-legend-item"><span class="heatmap-box heatmap-box-3"></span> 5-6</span>
+                        <span class="heatmap-legend-item"><span class="heatmap-box heatmap-box-4"></span> 7+</span>
+                    </div>
+                    <div class="heatmap-container" id="heatmap-container"></div>
+                </section>
             </section>
         </div>
 
@@ -235,6 +256,44 @@
 
     <!-- Toast -->
     <div class="toast" id="toast"></div>
+
+    <!-- Modal de Pomodoro -->
+    <div class="pomodoro-modal" id="pomodoro-modal">
+        <div class="pomodoro-content">
+            <button class="pomodoro-close" id="pomodoro-close" aria-label="Fechar Pomodoro">✕</button>
+            <div class="pomodoro-header">
+                <h2>🍅 Pomodoro</h2>
+                <p id="pomodoro-phase">Tempo de Trabalho</p>
+            </div>
+            <div class="pomodoro-display">
+                <div class="pomodoro-time" id="pomodoro-time">25:00</div>
+                <p class="pomodoro-subtitle">Sessões completadas: <span id="pomodoro-count">0</span></p>
+            </div>
+            <div class="pomodoro-controls">
+                <button class="btn-control" id="pomodoro-start" aria-label="Iniciar Pomodoro">▶ Iniciar</button>
+                <button class="btn-control" id="pomodoro-pause" aria-label="Pausar Pomodoro" style="display:none;">⏸
+                    Pausar</button>
+                <button class="btn-control" id="pomodoro-reset" aria-label="Resetar Pomodoro">⟲ Resetar</button>
+            </div>
+            <div class="pomodoro-bônus">
+                <span>🎯 Bônus XP por Pomodoro: <strong id="bonus-xp">50</strong> XP</span>
+            </div>
+            <div class="pomodoro-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Hoje:</span>
+                    <span class="stat-value" id="pomodoro-today">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Semana:</span>
+                    <span class="stat-value" id="pomodoro-week">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão flutuante para Pomodoro -->
+    <button class="pomodoro-fab" id="pomodoro-fab" aria-label="Abrir Pomodoro"
+        title="Clique para abrir Pomodoro">🍅</button>
 
     <script src="js/script.js"></script>
 </body>

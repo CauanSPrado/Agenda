@@ -1189,8 +1189,407 @@ header h2 {
     font-size: 0.8rem;
     font-weight: 800;
     cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    transition: all 0.18s;
+}
+
+/* ========== HEATMAP DE PRODUTIVIDADE ========== */
+.heatmap-section {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 2.5px solid #BDBDBD;
+    margin-top: 24px;
+}
+
+.heatmap-header {
+    margin-bottom: 20px;
+}
+
+.heatmap-header h3 {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--blue);
+    margin-bottom: 6px;
+}
+
+.heatmap-header p {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+}
+
+.heatmap-legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.heatmap-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-mid);
+}
+
+.heatmap-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+}
+
+/* Legend box colors (light theme) */
+.heatmap-box-0 {
+    background: #FFFFFF;
+    border: 1px solid #ccc;
+}
+
+.heatmap-box-1 {
+    background: #E3F2FD;
+}
+
+.heatmap-box-2 {
+    background: #90CAF9;
+}
+
+.heatmap-box-3 {
+    background: #42A5F5;
+}
+
+.heatmap-box-4 {
+    background: #1565C0;
+    color: var(--white);
+}
+
+/* Dark theme overrides for heatmap */
+html.dark-theme .heatmap-section {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+html.dark-theme .heatmap-header h3,
+html.dark-theme .heatmap-header p,
+html.dark-theme .heatmap-legend-item,
+html.dark-theme .heatmap-row-label,
+html.dark-theme .heatmap-cell {
+    color: var(--white);
+}
+
+html.dark-theme .heatmap-box-0,
+html.dark-theme .heatmap-box-1,
+html.dark-theme .heatmap-box-2,
+html.dark-theme .heatmap-box-3,
+html.dark-theme .heatmap-box-4,
+html.dark-theme .heatmap-cell-0,
+html.dark-theme .heatmap-cell-1,
+html.dark-theme .heatmap-cell-2,
+html.dark-theme .heatmap-cell-3,
+html.dark-theme .heatmap-cell-4 {
+    background: var(--bg);
+    border-color: #334155;
+    color: var(--white);
+}
+
+html.dark-theme .heatmap-cell:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+}
+
+.heatmap-container {
+    display: grid;
+    grid-template-columns: 80px repeat(4, 1fr);
+    gap: 3px;
+    overflow-x: auto;
+}
+
+.heatmap-row {
+    display: contents;
+}
+
+.heatmap-row-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: var(--text-mid);
+    height: 40px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+}
+
+.heatmap-cell {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.heatmap-cell-0 {
+    background: var(--white);
+    border-color: #ddd;
+}
+
+.heatmap-cell-1 {
+    background: #E3F2FD;
+}
+
+.heatmap-cell-2 {
+    background: #90CAF9;
+}
+
+.heatmap-cell-3 {
+    background: #42A5F5;
+}
+
+.heatmap-cell-4 {
+    background: #1565C0;
+    color: var(--white);
+}
+
+/* ========== POMODORO ========== */
+.pomodoro-fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8A65 100%);
+    border: 3px solid var(--white);
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.pomodoro-fab:hover {
+    transform: scale(1.15);
+    box-shadow: 0 8px 28px rgba(255, 107, 107, 0.6);
+}
+
+.pomodoro-fab:active {
+    transform: scale(0.95);
+}
+
+.pomodoro-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    backdrop-filter: blur(2px);
+}
+
+.pomodoro-modal.active {
+    display: flex;
+}
+
+.pomodoro-content {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+    max-width: 380px;
+    width: 90%;
+    position: relative;
+}
+
+.pomodoro-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-soft);
+    transition: color 0.2s;
+}
+
+.pomodoro-close:hover {
+    color: var(--text-dark);
+}
+
+.pomodoro-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.pomodoro-header h2 {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--blue);
+    margin-bottom: 4px;
+}
+
+.pomodoro-header p {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    font-weight: 700;
+}
+
+.pomodoro-display {
+    background: linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 24px;
+    border: 2.5px solid #FFB300;
+}
+
+.pomodoro-time {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #FF6B00;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.pomodoro-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    font-weight: 700;
+}
+
+.pomodoro-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.btn-control {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn-control:hover {
+    background: var(--blue-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+}
+
+.btn-control:active {
+    transform: translateY(0);
+}
+
+.pomodoro-bônus {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-bg);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    border: 1px solid var(--green-light);
+}
+
+.pomodoro-stats {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-transform: uppercase;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--blue);
+}
+
+/* ========== CONFETE E ANIMAÇÕES ========== */
+@keyframes confetti-fall {
+    to {
+        transform: translateY(100vh) rotateZ(360deg);
+        opacity: 0;
+    }
+}
+
+.confetti-particle {
+    animation: confetti-fall 3s ease-out forwards;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .pomodoro-fab {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .pomodoro-content {
+        padding: 24px;
+    }
+
+    .pomodoro-time {
+        font-size: 2.8rem;
+    }
+
+    .heatmap-container {
+        grid-template-columns: 60px repeat(4, 1fr);
+        gap: 2px;
+    }
+
+    .heatmap-cell {
+        width: 36px;
+        height: 36px;
+        font-size: 0.6rem;
+    }
+}
+
+font-family: 'Nunito',
+sans-serif;
+transition: all 0.18s;
 }
 
 .btn-done:hover {
@@ -1367,5 +1766,142 @@ header h2 {
     .modal {
         max-width: calc(100vw - 32px);
         padding: 22px;
+    }
+}
+
+/* ========== RESPONSIVO (TABLETS E CELULARES) ========== */
+@media (max-width: 900px) {
+
+    /* Transformar a sidebar em barra superior compacta */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px 12px;
+        gap: 12px;
+        border-right: none;
+        border-bottom: 2.5px solid #BDBDBD;
+        box-shadow: none;
+    }
+
+    .sidebar-logo {
+        gap: 8px;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 8px 0;
+    }
+
+    .nav-item {
+        padding: 8px 10px;
+        font-size: 0.88rem;
+    }
+
+    /* Empilhar o conteúdo principal para vertical (calendário acima, painel abaixo) */
+    .main-content {
+        flex-direction: column;
+        padding: 18px 14px;
+        gap: 16px;
+    }
+
+    /* Forçar o body a empilhar sidebar e conteúdo para evitar conteúdo off-screen */
+    body {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* Garantir que o main-content seja visível e ocupe largura completa */
+    .main-content {
+        display: flex !important;
+        width: 100%;
+    }
+
+    .calendar-container,
+    .progress-panel,
+    .timeline-container {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .calendar-container {
+        order: 1;
+    }
+
+    .progress-panel {
+        order: 2;
+    }
+
+    /* Ajustes do calendário para ocupar largura total e tornar dias menores */
+    .calendar-container {
+        padding: 18px;
+    }
+
+    .day {
+        aspect-ratio: auto;
+        padding: 10px 6px;
+    }
+
+    .day span {
+        font-size: 0.95rem;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    /* Mobile: simplificar ainda mais */
+    .theme-toggle {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    .nav-item {
+        padding: 6px 8px;
+        font-size: 0.82rem;
+    }
+
+    header h2 {
+        font-size: 1.25rem;
+    }
+
+    .nav-buttons button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .calendar-container {
+        padding: 14px;
+    }
+
+    .heatmap-container {
+        grid-template-columns: 50px repeat(4, 1fr);
+    }
+
+    .heatmap-cell {
+        width: 32px;
+        height: 32px;
+        font-size: 0.6rem;
+    }
+
+    .pomodoro-content {
+        max-width: 320px;
+        padding: 18px;
+    }
+
+    .pomodoro-time {
+        font-size: 2.4rem;
     }
 }

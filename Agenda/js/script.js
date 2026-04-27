@@ -108,6 +108,7 @@ document.querySelectorAll(".nav-item[data-view]").forEach((link) => {
             renderTimeline();
             syncTimelinePanel();
             renderProductivityReport();
+            renderHeatmap();
         }
     });
 });
@@ -774,8 +775,387 @@ reminderInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") addReminder();
 });
 
+// ========== CONFETE ==========
+function createConfetti() {
+    const canvas = document.getElementById("confetti-canvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    const colors = ["#FF6B6B", "#42A5F5", "#66BB6A", "#FFB300", "#FF8A65"];
+
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: -10,
+            vx: (Math.random() - 0.5) * 8,
+            vy: Math.random() * 3 + 2,
+            radius: Math.random() * 4 + 2,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * Math.PI * 2,
+            vRotation: (Math.random() - 0.5) * 0.2,
+            opacity: 1,
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.1; // gravidade
+            p.rotation += p.vRotation;
+            p.opacity -= 0.01;
+
+            if (p.opacity <= 0) {
+                particles.splice(i, 1);
+                return;
+            }
+
+            ctx.save();
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = p.color;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            ctx.fillRect(-p.radius, -p.radius, p.radius * 2, p.radius * 2);
+            ctx.restore();
+        });
+
+        if (particles.length > 0) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    animate();
+}
+
+// ========== POMODORO ==========
+let pomodoroState = {
+    isRunning: false,
+    timeLeft: 25 * 60,
+    isWorkPhase: true,
+    sessionsToday: 0,
+    sessionsWeek: 0,
+    pomodorosCompleted: [],
+    timerInterval: null,
+};
+
+const pomodoroModal = document.getElementById("pomodoro-modal");
+const pomodoroFab = document.getElementById("pomodoro-fab");
+const pomodoroClose = document.getElementById("pomodoro-close");
+const pomodoroStart = document.getElementById("pomodoro-start");
+const pomodoroTime = document.getElementById("pomodoro-time");
+const pomodoroCount = document.getElementById("pomodoro-count");
+const pomodoroPhase = document.getElementById("pomodoro-phase");
+const bonusXpEl = document.getElementById("bonus-xp");
+const pomodoroTodayEl = document.getElementById("pomodoro-today");
+const pomodoroWeekEl = document.getElementById("pomodoro-week");
+
+function playNotificationSound() {
+    const audioContext = new (
+        window.AudioContext || window.webkitAudioContext
+    )();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800;
+    oscillator.type = "sine";
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+        0.01,
+        audioContext.currentTime + 0.5,
+    );
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+}
+
+function updatePomodoroDisplay() {
+    const minutes = Math.floor(pomodoroState.timeLeft / 60);
+    const seconds = pomodoroState.timeLeft % 60;
+    pomodoroTime.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function startPomodoro() {
+    if (pomodoroState.isRunning) return;
+    pomodoroState.isRunning = true;
+    pomodoroStart.style.display = "none";
+    document.getElementById("pomodoro-pause").style.display = "inline-block";
+
+    pomodoroState.timerInterval = setInterval(() => {
+        pomodoroState.timeLeft--;
+        updatePomodoroDisplay();
+
+        if (pomodoroState.timeLeft <= 0) {
+            completePomodoroPhase();
+        }
+    }, 1000);
+}
+
+function pausePomodoro() {
+    pomodoroState.isRunning = false;
+    clearInterval(pomodoroState.timerInterval);
+    pomodoroStart.style.display = "inline-block";
+    document.getElementById("pomodoro-pause").style.display = "none";
+}
+
+function resetPomodoro() {
+    pausePomodoro();
+    pomodoroState.timeLeft = pomodoroState.isWorkPhase ? 25 * 60 : 5 * 60;
+    updatePomodoroDisplay();
+}
+
+function completePomodoroPhase() {
+    pausePomodoro();
+    playNotificationSound();
+
+    if (pomodoroState.isWorkPhase) {
+        // Trabalho concluído
+        pomodoroState.isWorkPhase = false;
+        pomodoroState.timeLeft = 5 * 60;
+        pomodoroState.sessionsToday++;
+        pomodoroState.pomodorosCompleted.push(new Date().toISOString());
+
+        // Guardar dados
+        try {
+            localStorage.setItem("pomodoroToday", pomodoroState.sessionsToday);
+            localStorage.setItem(
+                "pomodorosCompleted",
+                JSON.stringify(pomodoroState.pomodorosCompleted),
+            );
+        } catch (e) {}
+
+        pomodoroPhase.textContent = "Pausa - Respire!";
+        showToast("🍅 Sessão de trabalho concluída! +50 XP", "success");
+        addXP(50);
+        createConfetti();
+    } else {
+        // Pausa concluída
+        pomodoroState.isWorkPhase = true;
+        pomodoroState.timeLeft = 25 * 60;
+        pomodoroPhase.textContent = "Tempo de Trabalho";
+        showToast("⏰ Pausa concluída! Vamos trabalhar!", "info");
+    }
+
+    updatePomodoroDisplay();
+    updatePomodoroStats();
+}
+
+function updatePomodoroStats() {
+    pomodoroCount.textContent = pomodoroState.sessionsToday;
+    pomodoroTodayEl.textContent = pomodoroState.sessionsToday;
+
+    // Contar semana
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    const weekCount = pomodoroState.pomodorosCompleted.filter((date) => {
+        return new Date(date) > oneWeekAgo;
+    }).length;
+    pomodoroWeekEl.textContent = weekCount;
+}
+
+function openPomodoro() {
+    pomodoroModal.classList.add("active");
+    updatePomodoroDisplay();
+    updatePomodoroStats();
+}
+
+function closePomodoro() {
+    pomodoroModal.classList.remove("active");
+}
+
+pomodoroFab.addEventListener("click", openPomodoro);
+pomodoroClose.addEventListener("click", closePomodoro);
+pomodoroStart.addEventListener("click", startPomodoro);
+document
+    .getElementById("pomodoro-pause")
+    .addEventListener("click", pausePomodoro);
+document
+    .getElementById("pomodoro-reset")
+    .addEventListener("click", resetPomodoro);
+
+pomodoroModal.addEventListener("click", (e) => {
+    if (e.target === pomodoroModal) closePomodoro();
+});
+
+// ========== HEATMAP DE PRODUTIVIDADE ==========
+function renderHeatmap() {
+    const container = document.getElementById("heatmap-container");
+    if (!container) return;
+
+    const dailyStats = collectDailyStats();
+    const today = new Date();
+
+    // Coletar últimas 4 semanas (28 dias)
+    const heatmapData = [];
+    for (let i = 27; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const key = dateKey(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+        );
+        const tasks = reminders[key] || [];
+        const completed = tasks.filter((t) => t.done).length;
+        heatmapData.push({ date, key, completed });
+    }
+
+    const weekDays = [
+        "Domingo",
+        "Segunda",
+        "Terça",
+        "Quarta",
+        "Quinta",
+        "Sexta",
+        "Sábado",
+    ];
+
+    container.innerHTML = "";
+
+    // Cabeçalho com semanas
+    const headerDiv = document.createElement("div");
+    headerDiv.style.display = "contents";
+    headerDiv.innerHTML =
+        "<div></div>" +
+        Array(4)
+            .fill(0)
+            .map((_, i) => {
+                const weekStart = new Date(today);
+                weekStart.setDate(weekStart.getDate() - 27 + i * 7);
+                return `<div style=\"text-align: center; font-weight: 800; color: var(--text-soft); font-size: 0.75rem; padding: 8px 0;\">Sem ${i + 1}</div>`;
+            })
+            .join("");
+    container.appendChild(headerDiv);
+
+    // Renderizar matriz
+    weekDays.forEach((dayName, dayIndex) => {
+        const row = document.createElement("div");
+        row.className = "heatmap-row";
+
+        const label = document.createElement("div");
+        label.className = "heatmap-row-label";
+        label.textContent = dayName.slice(0, 3);
+        row.appendChild(label);
+
+        for (let week = 0; week < 4; week++) {
+            const index = dayIndex + week * 7;
+            if (index >= heatmapData.length) continue;
+
+            const dayData = heatmapData[index];
+            const completed = dayData.completed;
+
+            let intensity = 0;
+            if (completed === 0) intensity = 0;
+            else if (completed <= 2) intensity = 1;
+            else if (completed <= 4) intensity = 2;
+            else if (completed <= 6) intensity = 3;
+            else intensity = 4;
+
+            const cell = document.createElement("div");
+            cell.className = `heatmap-cell heatmap-cell-${intensity}`;
+            cell.textContent = completed > 0 ? completed : "";
+            cell.title = `${dayData.date.toLocaleDateString("pt-BR")}: ${completed} tarefas`;
+            row.appendChild(cell);
+        }
+
+        container.appendChild(row);
+    });
+}
+
+// ========== MELHORIAS DE NOTIFICAÇÃO E SNOOZE ==========
+function showNotificationWithSnooze(
+    message,
+    reminderKey,
+    reminderIndex,
+    type = "info",
+) {
+    showToast(message, type);
+
+    // Notificação do navegador (se permissão concedida)
+    if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(message, {
+            icon: "📅",
+            badge: "📅",
+        });
+    }
+}
+
+// Pedir permissão de notificação ao carregar
+if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+}
+
+// ========== SUGESTÃO DE HORÁRIO IDEAL ==========
+function getSuggestedTime() {
+    const dailyStats = collectDailyStats();
+    if (dailyStats.length === 0) return null;
+
+    // Agrupar por dia da semana
+    const weekdayStats = new Array(7).fill(0);
+    const weekdayCount = new Array(7).fill(0);
+
+    dailyStats.forEach((day) => {
+        const weekday = day.date.getDay();
+        weekdayStats[weekday] += day.done;
+        weekdayCount[weekday]++;
+    });
+
+    const avgByDay = weekdayStats.map((sum, i) =>
+        weekdayCount[i] > 0 ? sum / weekdayCount[i] : 0,
+    );
+
+    const bestDay = avgByDay.indexOf(Math.max(...avgByDay));
+    const weekDayNames = [
+        "Domingo",
+        "Segunda",
+        "Terça",
+        "Quarta",
+        "Quinta",
+        "Sexta",
+        "Sábado",
+    ];
+
+    return {
+        day: weekDayNames[bestDay],
+        dayIndex: bestDay,
+        avgTasks: avgByDay[bestDay],
+    };
+}
+
+// Modificar a função confirmReminder para adicionar confete
+const originalConfirmReminder = window.confirmReminder || (() => {});
+
+function confirmReminder(key, index) {
+    if (!reminders[key] || reminders[key][index].done) return;
+    reminders[key][index].done = true;
+    addXP(XP_PER_REMINDER);
+    showToast(`+${XP_PER_REMINDER} XP! Lembrete concluído 🎯`);
+    createConfetti();
+    if (viewTimeline.style.display !== "none") renderTimeline();
+}
+
 //  INIT
 renderCalendar();
 updateMissions();
 renderTodayReminders();
 syncTimelinePanel();
+renderHeatmap();
+
+// Carregar dados de Pomodoro do localStorage
+try {
+    const saved = localStorage.getItem("pomodoroToday");
+    if (saved) pomodoroState.sessionsToday = parseInt(saved);
+    const completed = localStorage.getItem("pomodorosCompleted");
+    if (completed) pomodoroState.pomodorosCompleted = JSON.parse(completed);
+} catch (e) {}
+
+updatePomodoroStats();
